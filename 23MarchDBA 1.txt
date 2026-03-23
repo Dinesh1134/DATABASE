@@ -1,0 +1,130 @@
+PL/SQL
+
+block of code
+
+types of blocks
+1) anonymous	
+2) procedure
+3) function 
+
+syntax for anonymous block
+
+DECLARE
+	local variables 
+BEGIN
+	STATEMENTS;
+END;
+/
+
+procedure
+CREATE OR REPLACE PROCEDURE proce_name(parameters)
+AS
+	local variables
+BEGIN
+	statements;
+END proce_name;
+/
+
+environmental variable that allows to display the value on the screen
+SERVEROUTPUT 
+
+packages that can display the content using the put_line() function
+DBMS_OUTPUT.Put_line()	|| allows to concatenate to the text
+
+SET SERVEROUTPUT ON
+-- display some text on the screen
+BEGIN
+	DBMS_OUTPUT.Put_Line('Hello! World');
+END;
+/
+ 
+
+View->DBMS output
+next click the green + button to add a new window and run the block
+-- to display a value in PL/SQL block
+DECLARE
+	v_name VARCHAR(40):='Somenath';
+BEGIN
+	DBMS_OUTPUT.Put_Line('My name is '||v_name);
+END;
+/
+
+-- block to search for employee
+
+DECLARE
+	v_name VARCHAR(20);
+	emp_id employees.employee_id%TYPE:=190;
+BEGIN
+	SELECT first_name INTO v_name 
+	FROM employees
+	WHERE employee_id=emp_id;
+	DBMS_OUTPUT.Put_Line('The employee is '||v_name);
+END;
+/
+
+
+-- create a procedure to find employee by employee_id
+CREATE OR REPLACE PROCEDURE proc_find(p_empid IN employees.employee_id%TYPE)
+AS
+	v_name VARCHAR(20);
+BEGIN
+	SELECT first_name INTO v_name
+	FROM employees
+	WHERE employee_id=p_empid;
+	DBMS_OUTPUT.Put_Line('The employee is '||v_name);
+END proc_find;
+/
+
+-- executing the procedure
+exec proc_find(200)
+
+-- add a new record into the teacher table 
+
+CREATE OR REPLACE PROCEDURE proc_add(p_id IN INT,
+					p_name IN VARCHAR,
+					p_subject IN VARCHAR)
+AS
+BEGIN
+		INSERT INTO teacher(id,name,subject) VALUES
+		(p_id,p_name,p_subject);
+END proc_add;
+/
+
+
+-- compile the block by
+@insert
+
+-- execute the block
+
+exec proc_add(120,'Ramesh','C++')
+
+-- cross check it in the table
+
+SELECT * FROM teacher;
+
+
+-- user defined functions 
+CREATE OR REPLACE FUNCTION func_name(parameters)
+RETURNS DATA_TYPE
+AS
+	local variables
+BEGIN
+	statements
+	return statement;
+END func_name;
+/
+
+--create a function to return the employee name
+CREATE OR REPLACE FUNCTION func_find(p_empid IN INT)
+RETURN VARCHAR
+	v_name VARCHAR(40);
+AS
+BEGIN
+	SELECT first_name INTO v_name 
+	FROM employees WHERE employee_id=p_empid;
+	RETURN v_name;
+END func_find;
+/
+
+SELECT func_find(199) FROM dual;
+
