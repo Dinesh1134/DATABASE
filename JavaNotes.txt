@@ -1,0 +1,69 @@
+Enter 1st No:<input type="text" name="t1"><br>
+Enter 2nd No:<input type="text" name="t2"><br>
+ 
+<input type="submit" value="ADD">
+ 
+</form>
+
+
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+
+            throws ServletException, IOException
+
+       {
+
+        response.setContentType("text/html;charset=UTF-8");
+
+        PrintWriter pw = response.getWriter();
+
+        int i=Integer.parseInt(request.getParameter("t1"));
+
+        int j=Integer.parseInt(request.getParameter("t2"));
+
+            int k=i+j;
+
+            pw.println(k);
+
+        }
+ 
+
+
+//in web.xml  , before the last line , just include this 3 lines
+<welcome-file-list>
+<welcome-file>add.html</welcome-file>
+</welcome-file-list>
+
+ 
+
+C:\Program Files\Apache Software Foundation\Tomcat 10.1\conf\server.xml   -- config file for changing the port no.... connector-port   tag(1st tag)
+ 
+C:\Program Files\Apache Software Foundation\Tomcat 10.1\conf\tomcat-users -- to check username & pwd
+ 
+
+ C:\Program Files\Glass fish 7\glassfish7\glassfish\domains\domain1\config\domain.xml       network-listener-port (3rd tag)
+ 
+
+
+C:\app\Dell\product\18.0.0\dbhomeXE\jdbc\lib\ojdbc8.jar
+
+	
+
+import java.sql.*;
+ 
+public class SelectAppln1 {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException
+    {       
+        Class.forName("oracle.jdbc.OracleDriver");  
+        try (Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","sasi1234"))
+        {
+            Statement stmt=con.createStatement();
+            ResultSet rs=stmt.executeQuery("select * from emp");
+            while (rs.next()) {
+                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
+            }
+        }  
+     catch(Exception e)
+     { System.out.println(e);}  
+     }  
+    }
+
