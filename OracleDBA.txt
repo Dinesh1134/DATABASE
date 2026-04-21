@@ -1,0 +1,104 @@
+Assignment 1: Creating Tables with Primary Key & Foreign Key (Normalization)
+Objective
+To design a normalized database for a Student-Course Enrollment System and implement it using Oracle SQL with Primary and Foreign Keys.
+Step 1: Identify Tables
+Student
+Course
+Teacher
+Department
+Enrollment
+Step 2: Apply Normalization
+1NF
+Separate data into different tables
+No repeating groups
+2NF
+Each table has a Primary Key
+3NF
+Remove transitive dependency
+Teacher linked to Department
+Course linked to Teacher
+Step 3: Create Tables
+🔹 Department Table
+SQL
+CREATE TABLE Department (
+    dept_id NUMBER PRIMARY KEY,
+    dept_name VARCHAR2(50)
+);
+📸 Paste Screenshot: Department table created (DESC Department)
+🔹 Teacher Table
+SQL
+CREATE TABLE Teacher (
+    teacher_id NUMBER PRIMARY KEY,
+    teacher_name VARCHAR2(50),
+    dept_id NUMBER,
+    FOREIGN KEY (dept_id) REFERENCES Department(dept_id)
+);
+📸 Paste Screenshot: Teacher table structure
+🔹 Course Table
+SQL
+CREATE TABLE Course (
+    course_id NUMBER PRIMARY KEY,
+    course_name VARCHAR2(50),
+    teacher_id NUMBER,
+    FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id)
+);
+📸 Paste Screenshot: Course table structure
+🔹 Student Table
+SQL
+CREATE TABLE Student (
+    student_id NUMBER PRIMARY KEY,
+    student_name VARCHAR2(50)
+);
+📸 Paste Screenshot: Student table structure
+🔹 Enrollment Table
+SQL
+CREATE TABLE Enrollment (
+    student_id NUMBER,
+    course_id NUMBER,
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+📸 Paste Screenshot: Enrollment table structure
+Step 4: Insert Data
+SQL
+INSERT INTO Department VALUES (1, 'IT');
+ 
+INSERT INTO Teacher VALUES (101, 'John', 1);
+ 
+INSERT INTO Course VALUES (201, 'DBMS', 101);
+ 
+INSERT INTO Student VALUES (1, 'Dinesh');
+ 
+INSERT INTO Enrollment VALUES (1, 201);
+📸 Paste Screenshot: Insert statements executed
+Step 5: Verify Data
+SQL
+SELECT * FROM Department;
+SELECT * FROM Teacher;
+SELECT * FROM Course;
+SELECT * FROM Student;
+SELECT * FROM Enrollment;
+📸 Paste Screenshot: Table data output
+Step 6: Verify Primary Keys
+SQL
+SELECT constraint_name, table_name 
+FROM user_constraints 
+WHERE constraint_type = 'P';
+📸 Paste Screenshot: Primary keys list
+Step 7: Verify Foreign Keys
+SQL
+SELECT constraint_name, table_name 
+FROM user_constraints 
+WHERE constraint_type = 'R';
+📸 Paste Screenshot: Foreign keys list
+Step 8: Final Output (Join Query)
+SQL
+SELECT s.student_name, c.course_name
+FROM Student s
+JOIN Enrollment e ON s.student_id = e.student_id
+JOIN Course c ON e.course_id = c.course_id;
+📸 Paste Screenshot: Final join output
+Result
+Successfully designed a normalized database and created tables with Primary and Foreign Keys. Verified relationships using queries.
+ 
